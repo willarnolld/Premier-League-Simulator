@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import pygame
 
-
 class Button:
     def __init__(self, text, pos, font, color= (255,255,255), bg=pygame.SRCALPHA, size = 20):
         self.x, self.y = pos
@@ -86,11 +85,10 @@ def simulate_season(team_data):
 
         if winner == team1:
             result_team1 = 'Win'
+        elif winner == team2:
+            result_team1 = 'Loss'
         else:
-            if winner == team2:
-                result_team1 = 'Loss'
-            else:
-                result_team1 = 'Draw'
+            result_team1 = 'Draw'
 
         team1_record = {
             'Opponent': team2,
@@ -100,11 +98,10 @@ def simulate_season(team_data):
 
         if winner == team2:
             result_team2 = 'Win'
+        elif winner == team1:
+            result_team2 = 'Loss'
         else:
-            if winner == team1:
-                result_team2 = 'Loss'
-            else:
-                result_team2 = 'Draw'
+            result_team2 = 'Draw'
 
         team2_record = {
             'Opponent': team1,
@@ -218,7 +215,7 @@ def render_team_stats(screen, team, records, back_button, start_y=200, scroll_of
 
     for i, header in enumerate(headers):
         header_surface = FONT.render(header, True, BLUE)
-        screen.blit(header_surface, (header_x[i], y_offset))
+        screen.blit(header_surface, (header_x[i], y_offset-50))
 
     y_offset += 40
 
@@ -232,7 +229,7 @@ def render_team_stats(screen, team, records, back_button, start_y=200, scroll_of
             else:
                 color = WHITE
             row_surface = FONT.render(text, True, color)
-            screen.blit(row_surface, (header_x[i], y_offset))
+            screen.blit(row_surface, (header_x[i], y_offset-50))
         y_offset += 30
 
 def render_sim_state(screen, sim_button, simbox, quit_box, view_button, simulation_complete):
@@ -317,8 +314,6 @@ while running:
             elif event.button == 5:
                 if gamestage == 2:
                     team_scroll_offset = max(team_scroll_offset - 30, team_max_scroll)
-                elif gamestage == 1:
-                    scroll_offset = max(scroll_offset - 30, max_scroll)
                 else:
                     scroll_offset = max(scroll_offset - 30, max_scroll)
 
@@ -345,7 +340,7 @@ while running:
                     gamestage = 2
                     current_team = team
                     team_scroll_offset = 0
-                    team_max_scroll = -(max(0, len(match_records[team]) * 30 - (SCREEN_HEIGHT - 240)))
+                    team_max_scroll = -(max(0, 38 * 30 - (SCREEN_HEIGHT - 210)))
                     break
             if back_button2.click(event):
                 gamestage = 0
